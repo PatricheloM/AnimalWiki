@@ -1,9 +1,10 @@
-import MainPage from "./Components/MainPage";
+import AnimalPage from "./AnimalPage";
 
 function App() {
   return (
     <>
-      <MainPage />
+      <div>Main Page</div>
+      <AnimalPage />
     </>
   );
 }

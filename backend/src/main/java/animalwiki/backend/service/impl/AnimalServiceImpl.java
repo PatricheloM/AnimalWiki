@@ -15,8 +15,8 @@ public class AnimalServiceImpl implements AnimalService {
     private AnimalRepository animalRepository;
 
     @Override
-    public boolean saveAnimal(Animal animal) {
-        return animalRepository.saveAnimal(animal);
+    public void saveAnimal(Animal animal) {
+        animalRepository.saveAnimal(animal);
     }
 
     @Override
@@ -37,5 +37,10 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void updateAnimal(String name, Animal animal) {
         animalRepository.updateAnimal(name, animal);
+    }
+
+    @Override
+    public boolean animalExists(String name) {
+        return animalRepository.animalExists(name);
     }
 }

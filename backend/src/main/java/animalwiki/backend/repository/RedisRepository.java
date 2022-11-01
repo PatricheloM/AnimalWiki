@@ -83,4 +83,9 @@ public class RedisRepository{
             return Collections.emptyList();
         }
     }
+
+    public boolean sismember(String key, String value)
+    {
+        return Boolean.TRUE.equals(connection.sIsMember(key.getBytes(UTF8), value.getBytes(UTF8)));
+    }
 }

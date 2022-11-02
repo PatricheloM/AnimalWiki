@@ -1,6 +1,7 @@
 package animalwiki.backend.repository.impl;
 
 import animalwiki.backend.model.Animal;
+import animalwiki.backend.model.type.Vertebrates;
 import animalwiki.backend.repository.RedisRepository;
 import animalwiki.backend.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         redisRepository.hmset(animal.getName(), Map.of(
                 "name", animal.getName(),
                 "img", animal.getImg(),
+                "type", animal.getType().toString(),
+                "extinct", animal.getExtinct().toString(),
                 "desc", animal.getDesc()));
         redisRepository.sadd(ANIMALNAMESET, animal.getName());
     }
@@ -40,10 +43,15 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Animal fetchAnimalByName(String name) {
         Animal animal = new Animal();
-        Map<String, String> values = redisRepository.hgetall(name);
-        animal.setName(values.get("name"));
-        animal.setImg(values.get("img"));
-        animal.setDesc(values.get("desc"));
+        if (redisRepository.sismember(ANIMALNAMESET, name))
+        {
+            Map<String, String> values = redisRepository.hgetall(name);
+            animal.setName(values.get("name"));
+            animal.setImg(values.get("img"));
+            animal.setType(Vertebrates.valueOf(values.get("type")));
+            animal.setExtinct(Boolean.valueOf(values.get("extinct")));
+            animal.setDesc(values.get("desc"));
+        }
         return animal;
     }
 
@@ -58,6 +66,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         redisRepository.hmset(name, Map.of(
                 "name", animal.getName(),
                 "img", animal.getImg(),
+                "type", animal.getType().toString(),
+                "extinct", animal.getExtinct().toString(),
                 "desc", animal.getDesc()));
     }
 

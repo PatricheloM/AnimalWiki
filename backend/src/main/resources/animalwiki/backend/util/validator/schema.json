@@ -12,11 +12,20 @@
       "description": "BASE64 encoded image of animal.",
       "type": "string"
     },
+    "type": {
+      "description": "Class of animal.",
+      "type": "string",
+      "enum": ["CHONDRICHTHYES", "OSTEICHTHYES", "AMPHIBIAN", "REPTILE", "BIRD", "MAMMAL"]
+    },
+    "extinct": {
+      "description": "Is the animal extinct?",
+      "type": "boolean"
+    },
     "desc": {
       "description": "Long description of animal.",
       "type": "string"
     }
   },
-  "required": ["name", "img", "desc"],
+  "required": ["name", "img", "type", "extinct", "desc"],
   "additionalProperties": false
 }

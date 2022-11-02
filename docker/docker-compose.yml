@@ -6,7 +6,9 @@ services:
     image: redis:alpine
     volumes:
       - ./redis.conf:/etc/redis/redis.conf
-    command: ["redis-server", "/etc/redis/redis.conf"]
+      - ./enumerate.redis:/root/enumerate.redis
+      - ./enumerate.sh:/root/enumerate.sh
+    entrypoint: sh -c "sh /root/enumerate.sh"
     expose:
       - "6379"
     ports:

@@ -1,5 +1,7 @@
 package animalwiki.backend.model;
 
+import animalwiki.backend.model.type.Vertebrates;
+
 import java.io.Serializable;
 
 public class Animal implements Serializable {
@@ -36,6 +38,22 @@ public class Animal implements Serializable {
         this.img = img;
     }
 
+    public Vertebrates getType() {
+        return type;
+    }
+
+    public void setType(Vertebrates type) {
+        this.type = type;
+    }
+
+    public Boolean getExtinct() {
+        return extinct;
+    }
+
+    public void setExtinct(Boolean extinct) {
+        this.extinct = extinct;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -47,5 +65,7 @@ public class Animal implements Serializable {
 
     private String name;
     private String img;
+    private Vertebrates type;
+    private Boolean extinct;
     private String desc;
 }

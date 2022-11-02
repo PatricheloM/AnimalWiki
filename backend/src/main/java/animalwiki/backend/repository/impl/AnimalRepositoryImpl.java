@@ -4,6 +4,7 @@ import animalwiki.backend.model.Animal;
 import animalwiki.backend.model.type.Vertebrates;
 import animalwiki.backend.repository.RedisRepository;
 import animalwiki.backend.repository.AnimalRepository;
+import animalwiki.backend.util.AnimalWikiTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +18,6 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Autowired
     private RedisRepository redisRepository;
 
-    public static final String ANIMALNAMESET = "ANIMALNAMES";
-
     @Override
     public void saveAnimal(Animal animal) {
         redisRepository.hmset(animal.getName(), Map.of(
@@ -27,13 +26,13 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 "type", animal.getType().toString(),
                 "extinct", animal.getExtinct().toString(),
                 "desc", animal.getDesc()));
-        redisRepository.sadd(ANIMALNAMESET, animal.getName());
+        redisRepository.sadd(AnimalWikiTools.getAnimalNamesSetKey(), animal.getName());
     }
 
     @Override
     public List<Animal> fetchAllAnimal() {
         List<Animal> animals = new ArrayList<>();
-        for (String name : redisRepository.smembers(ANIMALNAMESET))
+        for (String name : redisRepository.smembers(AnimalWikiTools.getAnimalNamesSetKey()))
         {
             animals.add(fetchAnimalByName(name));
         }
@@ -43,7 +42,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Animal fetchAnimalByName(String name) {
         Animal animal = new Animal();
-        if (redisRepository.sismember(ANIMALNAMESET, name))
+        if (redisRepository.sismember(AnimalWikiTools.getAnimalNamesSetKey(), name))
         {
             Map<String, String> values = redisRepository.hgetall(name);
             animal.setName(values.get("name"));
@@ -58,7 +57,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public void deleteAnimal(String name) {
         redisRepository.del(name);
-        redisRepository.srem(ANIMALNAMESET, name);
+        redisRepository.srem(AnimalWikiTools.getAnimalNamesSetKey(), name);
     }
 
     @Override
@@ -73,6 +72,6 @@ public class AnimalRepositoryImpl implements AnimalRepository {
 
     @Override
     public boolean animalExists(String name) {
-        return redisRepository.sismember(ANIMALNAMESET, name);
+        return redisRepository.sismember(AnimalWikiTools.getAnimalNamesSetKey(), name);
     }
 }

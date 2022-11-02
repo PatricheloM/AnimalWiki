@@ -5,7 +5,7 @@ import animalwiki.backend.model.type.Vertebrates;
 import animalwiki.backend.repository.RedisRepository;
 import animalwiki.backend.repository.TypeRepository;
 import animalwiki.backend.service.AnimalService;
-import animalwiki.backend.util.AnimalWikiTools;
+import animalwiki.backend.util.AnimalWikiStringTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,13 +23,13 @@ public class TypeRepositoryImpl implements TypeRepository {
 
     @Override
     public List<String> fetchAllType() {
-        return redisRepository.smembers(AnimalWikiTools.getAnimalTypesSetKey());
+        return redisRepository.smembers(AnimalWikiStringTools.getAnimalTypesSetKey());
     }
 
     @Override
     public List<Animal> fetchType(Vertebrates type) {
         List<Animal> animals = new ArrayList<>();
-        for (String name : redisRepository.smembers(AnimalWikiTools.getAnimalNamesSetKey()))
+        for (String name : redisRepository.smembers(AnimalWikiStringTools.getAnimalNamesSetKey()))
         {
             Animal animal = animalService.fetchAnimalByName(name);
             if (animal.getType() == type)

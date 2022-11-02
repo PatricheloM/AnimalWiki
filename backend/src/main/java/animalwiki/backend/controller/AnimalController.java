@@ -3,6 +3,7 @@ package animalwiki.backend.controller;
 import animalwiki.backend.model.Message;
 import animalwiki.backend.model.Animal;
 import animalwiki.backend.service.AnimalService;
+import animalwiki.backend.util.AnimalWikiStringTools;
 import animalwiki.backend.util.converter.AnimalConverter;
 import animalwiki.backend.util.json.JsonFactory;
 import animalwiki.backend.util.validator.JsonValidator;
@@ -31,17 +32,17 @@ public class AnimalController {
                 Animal animal = AnimalConverter.convert(object);
 
                 if (animalService.animalExists(animal.getName()))
-                    return new ResponseEntity<>(new Message("Animal already exists!"), HttpStatus.CONFLICT);
+                    return new ResponseEntity<>(new Message(AnimalWikiStringTools.getAnimalAlreadyExistsMsg()), HttpStatus.CONFLICT);
                 else {
                     animalService.saveAnimal(animal);
                     return new ResponseEntity<>(animal, HttpStatus.OK);
                 }
             }
             else
-                return new ResponseEntity<>(new Message("Bad request!"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new Message(AnimalWikiStringTools.getBadRequestMsg()), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new Message("Internal server error!"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new Message(AnimalWikiStringTools.getInternalServerErrorMsg()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -55,7 +56,7 @@ public class AnimalController {
     public ResponseEntity<Object> fetchAnimalByName(@PathVariable("name") String name) {
         Animal animal = animalService.fetchAnimalByName(name);
         if (animal.equals(new Animal()))
-            return new ResponseEntity<>(new Message("Animal not found!"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(AnimalWikiStringTools.getAnimalNotFoundMsg()), HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(animal, HttpStatus.OK);
     }
@@ -64,7 +65,7 @@ public class AnimalController {
     public ResponseEntity<Object> deleteAnimal(@PathVariable("name") String name) {
         Animal animal = animalService.fetchAnimalByName(name);
         if (animal.equals(new Animal()))
-            return new ResponseEntity<>(new Message("Animal not found!"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message(AnimalWikiStringTools.getAnimalNotFoundMsg()), HttpStatus.NOT_FOUND);
         else {
             animalService.deleteAnimal(name);
             return new ResponseEntity<>(animal, HttpStatus.OK);
@@ -82,20 +83,20 @@ public class AnimalController {
                 if (name.equals(newAnimal.getName()))
                 {
                     if (animal.equals(new Animal()))
-                        return new ResponseEntity<>(new Message("Animal not found!"), HttpStatus.NOT_FOUND);
+                        return new ResponseEntity<>(new Message(AnimalWikiStringTools.getAnimalNotFoundMsg()), HttpStatus.NOT_FOUND);
                     else {
                         animalService.updateAnimal(name, newAnimal);
                         return new ResponseEntity<>(newAnimal, HttpStatus.OK);
                     }
                 }
                 else
-                    return new ResponseEntity<>(new Message("Wrong name in request!"), HttpStatus.CONFLICT);
+                    return new ResponseEntity<>(new Message(AnimalWikiStringTools.getWrongNameInRequestMsg()), HttpStatus.CONFLICT);
             }
             else
-                return new ResponseEntity<>(new Message("Bad request!"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new Message(AnimalWikiStringTools.getBadRequestMsg()), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new Message("Internal server error!"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new Message(AnimalWikiStringTools.getInternalServerErrorMsg()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

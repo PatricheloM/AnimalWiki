@@ -19,17 +19,12 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     public static final String ANIMALNAMESET = "ANIMALNAMES";
 
     @Override
-    public boolean saveAnimal(Animal animal) {
-        try {
-            redisRepository.hmset(animal.getName(), Map.of(
-                    "name", animal.getName(),
-                    "img", animal.getImg(),
-                    "desc", animal.getDesc()));
-            redisRepository.sadd(ANIMALNAMESET, animal.getName());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void saveAnimal(Animal animal) {
+        redisRepository.hmset(animal.getName(), Map.of(
+                "name", animal.getName(),
+                "img", animal.getImg(),
+                "desc", animal.getDesc()));
+        redisRepository.sadd(ANIMALNAMESET, animal.getName());
     }
 
     @Override
@@ -64,5 +59,10 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 "name", animal.getName(),
                 "img", animal.getImg(),
                 "desc", animal.getDesc()));
+    }
+
+    @Override
+    public boolean animalExists(String name) {
+        return redisRepository.sismember(ANIMALNAMESET, name);
     }
 }

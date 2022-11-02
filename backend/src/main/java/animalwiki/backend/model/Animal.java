@@ -44,6 +44,7 @@ public class Animal implements Serializable {
         this.desc = desc;
     }
 
+
     private String name;
     private String img;
     private String desc;

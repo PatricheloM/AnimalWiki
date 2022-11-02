@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AnimalService {
 
-    boolean saveAnimal(Animal animal);
+    void saveAnimal(Animal animal);
 
     List<Animal> fetchAllAnimal();
 
@@ -15,4 +15,6 @@ public interface AnimalService {
     void deleteAnimal(String name);
 
     void updateAnimal(String name, Animal animal);
+
+    boolean animalExists(String name);
 }

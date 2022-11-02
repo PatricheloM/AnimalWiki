@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Animal",
+  "description": "An animal specie.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Name of the animal.",
+      "type": "string"
+    },
+    "img": {
+      "description": "BASE64 encoded image of animal.",
+      "type": "string"
+    },
+    "desc": {
+      "description": "Long description of animal.",
+      "type": "string"
+    }
+  },
+  "required": ["name", "img", "desc"],
+  "additionalProperties": false
+}

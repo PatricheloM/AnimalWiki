@@ -17,13 +17,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/animal")
 public class AnimalController {
 
     @Autowired
     private AnimalService animalService;
 
-    @PostMapping(value = "/animal", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> saveAnimal(@RequestBody Object object) {
         try {
             if (JsonValidator.validate(JsonFactory.produce(object))) {
@@ -45,13 +45,13 @@ public class AnimalController {
         }
     }
 
-    @GetMapping(value = "/animal", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Animal>> fetchAllAnimal() {
         List<Animal> animals = animalService.fetchAllAnimal();
         return new ResponseEntity<>(animals, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/animal/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> fetchAnimalByName(@PathVariable("name") String name) {
         Animal animal = animalService.fetchAnimalByName(name);
         if (animal.equals(new Animal()))
@@ -60,7 +60,7 @@ public class AnimalController {
             return new ResponseEntity<>(animal, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/animal/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> deleteAnimal(@PathVariable("name") String name) {
         Animal animal = animalService.fetchAnimalByName(name);
         if (animal.equals(new Animal()))
@@ -71,7 +71,7 @@ public class AnimalController {
         }
     }
 
-    @PutMapping(value = "/animal/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateAnimal(@PathVariable("name") String name, @RequestBody Object object) {
         try {
             if (JsonValidator.validate(JsonFactory.produce(object))) {

@@ -21,7 +21,7 @@ public class QueryController {
     @Autowired
     QueryService queryService;
 
-    @GetMapping(value = "/{query}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{query}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> fetchAnimalByName(@PathVariable("query") String query) {
         List<String> animals = queryService.searchFor(query);
         return new ResponseEntity<>(animals, HttpStatus.OK);

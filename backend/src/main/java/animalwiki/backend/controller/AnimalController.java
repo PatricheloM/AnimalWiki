@@ -46,13 +46,13 @@ public class AnimalController {
         }
     }
 
-    @GetMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Animal>> fetchAllAnimal() {
         List<Animal> animals = animalService.fetchAllAnimal();
         return new ResponseEntity<>(animals, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{name}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> fetchAnimalByName(@PathVariable("name") String name) {
         Animal animal = animalService.fetchAnimalByName(name);
         if (animal.equals(new Animal()))
@@ -61,7 +61,7 @@ public class AnimalController {
             return new ResponseEntity<>(animal, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{name}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{name}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> deleteAnimal(@PathVariable("name") String name) {
         Animal animal = animalService.fetchAnimalByName(name);
         if (animal.equals(new Animal()))

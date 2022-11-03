@@ -20,13 +20,13 @@ public class TypeController {
     @Autowired
     private TypeService typeService;
 
-    @GetMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> fetchAllType() {
         List<String> types = typeService.fetchAllType();
         return new ResponseEntity<>(types, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{type}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{type}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Animal>> fetchType(@PathVariable("type") Vertebrates type) {
         List<Animal> types = typeService.fetchType(type);
         return new ResponseEntity<>(types, HttpStatus.OK);

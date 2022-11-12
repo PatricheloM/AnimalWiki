@@ -3,26 +3,12 @@ import "../style/MainPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-let items = [];
-
-const getResponse = async () => {
-  try {
-    const response = await axios.get("http://localhost:8080/api/type");
-    items = response.data;
-    console.log(items);
-  } catch (err) {
-    console.log("err");
-  }
-};
-
-getResponse();
-
 export default function MainPage() {
   let itemList = [];
-  items.forEach((item, index) => {
+  const [title, setTitle] = useState([]);
+  title.forEach((item, index) => {
     itemList.push(<li key={index}>{item}</li>);
   });
-  const [title, setTitle] = useState([]);
   useEffect(() => {
     async function getStoreData() {
       const response = await axios.get("http://localhost:8080/api/type");
@@ -33,7 +19,7 @@ export default function MainPage() {
   return (
     <div className="container">
       <div className="firstLine">
-        <img src={logo} alt="Logo" />;<ul className="firstUl">{itemList}</ul>
+        <img src={logo} alt="Logo" /> <ul className="firstUl">{itemList}</ul>
       </div>
       <div className="secondLine">
         <div className="search__container">

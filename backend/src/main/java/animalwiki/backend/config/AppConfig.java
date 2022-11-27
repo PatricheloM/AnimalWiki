@@ -1,36 +1,30 @@
 package animalwiki.backend.config;
 
 import animalwiki.backend.model.RedisConfig;
-import animalwiki.backend.repository.RedisRepository;
+import animalwiki.backend.util.exception.ConfigNotFoundException;
 import animalwiki.backend.util.json.ObjectFactory;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisPassword;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-
-import java.io.IOException;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
 @EnableCaching
 public class AppConfig {
 
     @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
+    JedisPool jedisPool() {
         RedisConfig redisConfig;
         try {
             redisConfig = ObjectFactory.produce(AppConfig.class.getResourceAsStream("redis.json"), RedisConfig.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new ConfigNotFoundException(e);
         }
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisConfig.getHost(), redisConfig.getPort());
-        redisStandaloneConfiguration.setPassword(RedisPassword.of(redisConfig.getPassword()));
-        return new JedisConnectionFactory(redisStandaloneConfiguration);
-    }
-
-    @Bean
-    public RedisRepository redisRepository() {
-        return new RedisRepository(jedisConnectionFactory().getConnection());
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(redisConfig.getMaxPool());
+        jedisPoolConfig.setMaxIdle(redisConfig.getMaxIdlePool());
+        jedisPoolConfig.setMinIdle(redisConfig.getMinIdlePool());
+        return new JedisPool(jedisPoolConfig, redisConfig.getHost(), redisConfig.getPort(), redisConfig.getTimeout(), redisConfig.getPassword());
     }
 }

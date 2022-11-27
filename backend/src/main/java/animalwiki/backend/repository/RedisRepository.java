@@ -1,91 +1,86 @@
 package animalwiki.backend.repository;
 
-import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
-public class RedisRepository{
+@Repository
+public class RedisRepository {
 
-    Charset UTF8 = StandardCharsets.UTF_8;
+    @Autowired
+    JedisPool jedisPool;
 
-    RedisConnection connection;
-
-    public RedisRepository(RedisConnection connection) {
-        this.connection = connection;
+    public void set(String key, String value)
+    {
+        Jedis jedis = jedisPool.getResource();
+        jedis.set(key, value);
+        jedis.close();
     }
 
-    public boolean set(String key, String value)
+    public int del(String... key)
     {
-        return Boolean.TRUE.equals(connection.set(key.getBytes(UTF8), value.getBytes(UTF8)));
-    }
-
-    public Long del(String key)
-    {
-        return connection.del(key.getBytes(UTF8));
+        Jedis jedis = jedisPool.getResource();
+        int response = jedis.del(key).intValue();
+        jedis.close();
+        return response;
     }
 
     public void hmset(String key, Map<String, String> values)
     {
-        Map<byte[], byte[]> byteValues = new HashMap<>();
-        for (String mapKey : values.keySet())
-        {
-            byteValues.put(mapKey.getBytes(UTF8), values.get(mapKey).getBytes(UTF8));
-        }
-        connection.hMSet(key.getBytes(UTF8), byteValues);
+        Jedis jedis = jedisPool.getResource();
+        jedis.hmset(key, values);
+        jedis.close();
     }
 
-    public void sadd(String key, String value)
+    public int sadd(String key, String... value)
     {
-        connection.sAdd(key.getBytes(UTF8), value.getBytes(UTF8));
+        Jedis jedis = jedisPool.getResource();
+        int response = jedis.sadd(key, value).intValue();
+        jedis.close();
+        return response;
     }
 
-    public Long srem(String key, String value)
+    public int srem(String key, String... value)
     {
-        return connection.sRem(key.getBytes(UTF8), value.getBytes(UTF8));
+        Jedis jedis = jedisPool.getResource();
+        int response = jedis.srem(key, value).intValue();
+        jedis.close();
+        return response;
     }
 
     public Map<String, String> hgetall(String key)
     {
-        Map<byte[], byte[]> byteValues = connection.hGetAll(key.getBytes(UTF8));
-        Map<String, String> values = new HashMap<>();
-
-        if (byteValues != null)
-        {
-            for (byte[] bytes : byteValues.keySet())
-            {
-                values.put(new String(bytes, UTF8), new String(byteValues.get(bytes), UTF8));
-            }
+        Jedis jedis = jedisPool.getResource();
+        Map<String, String> values = jedis.hgetAll(key);
+        jedis.close();
+        if (!values.isEmpty()) {
             return values;
-        }
-        else
-        {
+        } else {
             return Collections.emptyMap();
         }
     }
 
     public List<String> smembers(String key)
     {
-        Set<byte[]> byteValues = connection.sMembers(key.getBytes(UTF8));
-        List<String> values = new ArrayList<>();
-        if (byteValues != null)
-        {
-            for (byte[] bytes : byteValues)
-            {
-                values.add(new String(bytes, UTF8));
-            }
+        Jedis jedis = jedisPool.getResource();
+        List<String> values = new ArrayList<>(jedis.smembers(key));
+        jedis.close();
+        if (!values.isEmpty()) {
             return values;
-        }
-        else
-        {
+        } else {
             return Collections.emptyList();
         }
     }
 
     public boolean sismember(String key, String value)
     {
-        return Boolean.TRUE.equals(connection.sIsMember(key.getBytes(UTF8), value.getBytes(UTF8)));
+        Jedis jedis = jedisPool.getResource();
+        boolean response = jedis.sismember(key, value);
+        jedis.close();
+        return response;
     }
 }

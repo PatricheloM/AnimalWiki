@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
+import GSearch from "./GSearch";
 
 export default function MainPage() {
   let itemList = [];
@@ -35,7 +36,7 @@ export default function MainPage() {
       </div>
       <div className="secondLine">
         <div className="search__container">
-          <SearchBar placeholder="sss" />
+          <GSearch />
         </div>
       </div>
     </div>

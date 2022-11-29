@@ -1,0 +1,33 @@
+.animal-body {
+  width: 100vh;
+  height: 100vh;
+}
+.nest {
+  width: 50%;
+  margin: 40px auto;
+  border: solid 1px;
+  padding: 20px;
+  border-color: #fff;
+  color: PaleGoldenRod;
+}
+
+.liner {
+  display: flex;
+  align-items: flex-start;
+  text-align: justify;
+}
+.liner:after {
+  content: "";
+  flex-grow: 1;
+  height: 1px;
+  background: #fff;
+  min-width: 20px;
+  margin: auto;
+}
+.liner:after {
+  margin-left: 20px;
+}
+
+h4 {
+  text-align: justify;
+}

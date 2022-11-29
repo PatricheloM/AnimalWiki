@@ -14,11 +14,15 @@ function Specie({ match }) {
     let obj = title[i];
 
     allAnim.push(obj.name);
-
-    console.log(obj.name);
   }
   allAnim.forEach((item, index) => {
-    finalAnim.push(<li key={index}>{item}</li>);
+    finalAnim.push(
+      <Link className="anim-link" to={`/type/${item}`}>
+        <p key={index}>{item}</p>
+      </Link>
+    );
+    console.log("final:");
+    console.log(finalAnim);
   });
   useEffect(() => {
     async function getStoreData() {
@@ -42,7 +46,7 @@ function Specie({ match }) {
           </Link>
         </div>
         <div>
-          <ul>{finalAnim}</ul>
+          <ul className="finalAnim-cont">{finalAnim}</ul>
         </div>
       </div>
     </div>

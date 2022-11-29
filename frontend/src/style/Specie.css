@@ -28,11 +28,6 @@ h1 {
   text-align: center;
 }
 
-h1:hover {
-  font-variation-settings: "wght" 582;
-  letter-spacing: 30px;
-}
-
 p {
   font-size: 1.2em;
   line-height: 150%;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "../style/Animal.css";
 
 function Animal({ match }) {
@@ -13,7 +13,6 @@ function Animal({ match }) {
         `http://localhost:8080/api/animal/${animal}`
       );
       setAnimal(response.data);
-      console.log(response.data);
     }
     getStoreData();
   }, []);
@@ -21,12 +20,16 @@ function Animal({ match }) {
     <div className="animal-body">
       <div className="animal-header">
         <h1>{Ani.name}</h1>
+		   <Link to="/" style={{ textDecoration: "none" }}>
+            <button class="button-14" role="button">
+              Home
+            </button>
+          </Link>
       </div>
-      <p>
-        <img src={Ani.img}></img>
-      </p>
+      <img src={Ani.img} />
       <div class="nest">
-        <h3 class="liner">{Ani.type}</h3>
+        <h3 class="liner">{"TYPE: " + Ani.type}</h3>
+		<h3 class="liner">{Ani.extinct ? "EXTINCT: YES" : "EXTINCT: NO"}</h3>
         <h4>{Ani.desc}</h4>
       </div>
     </div>

@@ -33,7 +33,7 @@ export default function App() {
     setValue(searchTerm);
     // our api to fetch the search result
     console.log("search ", searchTerm);
-    navigate(`/type/${searchTerm}`);
+    navigate(`/animal/${searchTerm}`);
   };
 
   return (

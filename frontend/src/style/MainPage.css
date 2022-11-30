@@ -33,7 +33,7 @@ ul * {
   display: block;
   padding: 4px 0;
   font-family: Lato, sans-serif;
-  color: #ecf0f1;
+  color: PaleGoldenRod;
   text-decoration: none;
   text-transform: uppercase;
   transition: 0.5s;

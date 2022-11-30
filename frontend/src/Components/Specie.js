@@ -17,12 +17,10 @@ function Specie({ match }) {
   }
   allAnim.forEach((item, index) => {
     finalAnim.push(
-      <Link className="anim-link" to={`/type/${item}`}>
+      <Link className="anim-link" to={`/animal/${item}`}>
         <p key={index}>{item}</p>
       </Link>
     );
-    console.log("final:");
-    console.log(finalAnim);
   });
   useEffect(() => {
     async function getStoreData() {
@@ -30,7 +28,6 @@ function Specie({ match }) {
         `http://localhost:8080/api/type/${specie}`
       );
       setTitle(response.data);
-      console.log(response.data);
     }
     getStoreData();
   }, []);

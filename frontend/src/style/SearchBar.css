@@ -6,7 +6,7 @@
   align-items: center;
 }
 .dropdown {
-  background-color: white;
+  background-color: PaleGoldenRod;
   display: flex;
   flex-direction: column;
   border: 1px solid gray;

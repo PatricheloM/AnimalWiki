@@ -31,3 +31,15 @@
 h5 {
   text-align: justify;
 }
+
+h4 {
+	display: flex;
+	align-items: flex-start;
+	text-align: justify;
+}
+
+img {
+	margin-top: 3vh;
+	width: 20vw;
+	height: auto;
+}
